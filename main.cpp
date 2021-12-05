@@ -108,7 +108,12 @@ int main(int, char**) {
             posi_of_fruit=posi_fruit(coordhaut,coordbas);
             snake_growth(snake,ancient_queue); //Agit par effet de bord aussi
         }
-        
+        if (snake_eat_himself(snake)){
+            screen_clear();
+            std::cout <<"Game over" <<std::endl;
+            return(0); //On arrête le programme, on pourra demander plus tard si l'on veut rejouer A FAIRE
+        }
+
         // Exemple d'attente si besoin était (attention, suspend entièrement l'application)
         //std::this_thread::sleep_for (std::chrono::milliseconds(100));
     }

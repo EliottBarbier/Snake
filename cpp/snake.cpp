@@ -34,3 +34,17 @@ std::pair<int,int> pop_front(std::vector<std::pair<int,int>> &snake){
 void snake_growth(std::vector<std::pair<int,int>> &snake, const std::pair<int,int> &ancient_queue){
     push_front(snake,ancient_queue);
 }
+
+bool snake_eat_himself(const std::vector<std::pair<int,int>> &snake){
+    std::pair<int,int> fin = snake.back();
+
+    for(int i=0;i<snake.size()-1;i++){ //J'itère sur les indices et pas sur les éléments car je ne veux pas la tête du serpent.
+        if (snake[i]==fin){
+            return(true);
+        }
+
+    }
+    return(false);
+    
+
+}
