@@ -1,6 +1,8 @@
 #pragma once
-# include <vector>
+#include <vector>
 
+
+//On définit une structure ici !
 struct snake_segment_st
 {
     int dx = 0;
@@ -13,3 +15,5 @@ struct snake_segment_st
 
 // Fonctions du snake
 void snake_init ();
+void push_front(std::vector<std::pair<int,int>> &snake,const std::pair<int,int> &valeur);
+void snake_growth(std::vector<std::pair<int,int>> &snake, const std::pair<int,int> &ancient_queue);
