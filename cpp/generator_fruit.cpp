@@ -1,5 +1,7 @@
 #include "generator_fruit.h"
 
+
+//On génère la position du fruit dans la grille, de manière aléatoire
 std::pair<int,int> posi_fruit(const std::pair<int,int> &coordhaut,const std::pair<int,int> &coordbas){
 
     int MINx=coordhaut.first+1;

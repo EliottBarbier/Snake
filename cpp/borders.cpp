@@ -1,7 +1,7 @@
 #include <iostream>
 #include "borders.h"
 
-
+//On génère un std::map avec les coordonnées des bordures, pour qu'ensuite on les affiche
 void borders(std::map<std::pair<int,int>,bool> &board,const std::pair<int,int> &coordhaut,const std::pair<int,int> &coordbas){
     int x1=coordhaut.first;
     int y1=coordhaut.second;
@@ -19,6 +19,7 @@ void borders(std::map<std::pair<int,int>,bool> &board,const std::pair<int,int> &
     }
 }
 
+//On génère un std::map avec les coordonnées de la grille de jeux, pour qu'ensuite on l'affiche
 void inside_board(std::map<std::pair<int,int>,bool> &board,const std::pair<int,int> &coordhaut,const std::pair<int,int> &coordbas){
     int x1=coordhaut.first;
     int y1=coordhaut.second;
