@@ -22,7 +22,7 @@ std::vector<std::pair<int,int>> snake; //Je définie le snake comme ceci, l'avan
 std::pair<int,int> coordhaut {1,1}; //Le haut gauche de la grille est à (1,1). On définit la taille de la grille de jeux, 
 std::pair<int,int> coordbas {21,51};//bords inclus ici
 
-std::map<std::pair<int,int>,bool> borders_map; //La carte des bordures
+std::map<std::pair<int,int>,bool> borders_map; //La carte des bordures, après réfléxion, un std::vector aurait suffit.
 std::map<std::pair<int,int>,bool> board_map; //La carte de la grille de jeux
 
 
@@ -51,8 +51,8 @@ int main(int, char**) {
     std::pair<int,int> posi_of_fruit; //On définit le fruit initial 
     posi_of_fruit=posi_fruit(coordhaut,coordbas);
 
-
-    while (true) //On démarre le jeux, il faudra mettre un cadençage + le fait que le snake continue en 
+    bool bool_for_while = true;
+    while (bool_for_while) //On démarre le jeux, il faudra mettre un cadençage + le fait que le snake continue en 
                  //ligne droite quand on ne touche à rien/
     {
 
@@ -111,8 +111,18 @@ int main(int, char**) {
         if (snake_eat_himself(snake)){
             screen_clear();
             std::cout <<"Game over" <<std::endl;
-            return(0); //On arrête le programme, on pourra demander plus tard si l'on veut rejouer A FAIRE
+            bool_for_while=false;
+            //On pourra demander plus tard si l'on veut rejouer A FAIRE
         }
+        if (snake_touch_borders(snake,borders_map)){
+            screen_clear();
+            std::cout<< "Game Over" <<std::endl;
+            bool_for_while=false;
+            
+        }
+
+        
+
 
         // Exemple d'attente si besoin était (attention, suspend entièrement l'application)
         //std::this_thread::sleep_for (std::chrono::milliseconds(100));

@@ -45,6 +45,15 @@ bool snake_eat_himself(const std::vector<std::pair<int,int>> &snake){
 
     }
     return(false);
-    
+}
 
+bool snake_touch_borders(const std::vector<std::pair<int,int>> &snake,std::map<std::pair<int,int>,bool> &borders_map){
+    bool exists = borders_map.find(snake.back()) != borders_map.end(); //Pour savoir si la clé est définie
+    if (exists){
+        return(borders_map[snake.back()]); //Si dans la map on a true ça veut dire ue c'est une bordure. Bon après avec ce 
+        //que j'ai fait les seules clés allouée sont des true mais bon...
+    }   //On est sur de pas modifier la map comme on a vérifié que la clé existait belle et bien
+    else{
+    return(exists);
+    }
 }
