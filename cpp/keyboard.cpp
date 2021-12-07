@@ -30,8 +30,8 @@ char keyboard_scan()
     fd_set set;
     struct timeval tv;
 
-    tv.tv_sec = 10;
-    tv.tv_usec = 0;
+    tv.tv_sec = 0;
+    tv.tv_usec = 200000;
 
     FD_ZERO(&set);
     FD_SET(fileno(stdin), &set);
@@ -46,7 +46,7 @@ char keyboard_scan()
     }
     else if (res < 0)
     {
-        //perror("select error");
+        //perror("select error");       
     }
     else
     {
