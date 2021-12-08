@@ -31,7 +31,7 @@ char keyboard_scan()
     struct timeval tv;
 
     tv.tv_sec = 0;
-    tv.tv_usec = 200000;
+    tv.tv_usec = 200000; //On peut faire en sorte que la vitesse augmente plus le serpent est grand.
 
     FD_ZERO(&set);
     FD_SET(fileno(stdin), &set);

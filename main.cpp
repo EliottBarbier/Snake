@@ -68,15 +68,6 @@ int main(int, char**) {
         screen_draw_fruit(posi_of_fruit); //Le fruit
         screen_draw_snake(snake); //Le snake
 
-        //board_clear(snake_board)
-        //board_set_pixel(snake_board, x, y); //On dit que on met la croix en (0,0) ie en haut à gauch, puis on actualise //en fonction du clavier.
-        //for(int i =1;i<= snake_size;i++){
-        //std::pair<int,int> posi {0,i};
-        //snake_board[posi]=true;
-        //}
-        //screen_draw_board(snake_board); //On affiche le serpent
-
-
         // Lecture clavier et actions
         int rafraichissement = 200; //Il faut que ça soit le même que celui du keyboard
         double conversion = 1000;
@@ -95,16 +86,19 @@ int main(int, char**) {
             continu="NO";
         }
         else{
-            continu="YES";
+            continu="YES"; //La variable qui permet de savoir si on a exécuté la séquence foireuse.
         }
-
+        //Si on appuie sur une touche, le keyboard_scan se coupe, il faut donc faire attendre le programme de manière 
+        //à ce que le serpent se déplace à vitesse constante.
         if ((key_scan == UP_ARROW) or (key_scan == DOWN_ARROW) or (key_scan == RIGHT_ARROW) or (key_scan == LEFT_ARROW)){
             temps2=time::now();
             final = temps2-temps1;
             auto sec = final.count();
             std::this_thread::sleep_for (ms ( (int) (rafraichissement - sec*conversion - 100) ) ); //Le 100 a été ajouté pour que plus réalisme dans le déplacement (pas de saccades)
         }
-        //On distingue le cas où on continue car on n'appuie sur rien et le cas où l'on change de direction.
+
+        //On distingue le cas où on continue car on n'appuie sur rien (on continue dans la direction précédente) *
+        //et le cas où l'on change de direction.
         if (continu=="YES" and not((key_scan==UP_ARROW) or (key_scan==DOWN_ARROW) or (key_scan==LEFT_ARROW) or (key_scan==RIGHT_ARROW))){
         
             if (mouv=="UP"){
@@ -134,7 +128,7 @@ int main(int, char**) {
         }
         else if (key_scan == DOWN_ARROW)
         {
-            mouv = "DOWN"; //On enregistre le mouv effectué pour le prochain coup dans le cas où on appuie sur rien.
+            mouv = "DOWN"; //On enregistre le mouv effectué pour le prochain coup dans le cas où l'on appuie sur aucune touche.
             x++;
             ancient_queue = pop_front(snake);
             snake.push_back({x,y});
@@ -157,51 +151,45 @@ int main(int, char**) {
         //}//Fin if
         }//Fin else
 
-        
-        
-        
         // Contrôle  des limites
         if (x < 0) x=0;
         if (y < 0) y=0;
 
-        if (snake.back()==posi_of_fruit){ //Il faudra traiter le cas pour qu'il ne se mette pas où le snake est déjà
-                                          //On regarde si le snake mange le fruit
-            posi_of_fruit=posi_fruit(coordhaut,coordbas);
-            if (fruit_on_snake(snake,posi_of_fruit)){
+        //Si le snake lange le fruit :
+        if (snake.back()==posi_of_fruit){
+            posi_of_fruit=posi_fruit(coordhaut,coordbas);//On génère un nouveau fruit
+            if (fruit_on_snake(snake,posi_of_fruit)){ //On regarde s'il est sur le snake
                 int taille = (coordbas.first - coordhaut.first)*(coordbas.second - coordhaut.second);
-                if (snake.size() <= taille/2){
+                if (snake.size() >= taille/2){ //Si le snake est suffisamment grand, on crée le nouveau fruit de manière intelligente
                     posi_of_fruit=gene_fruit_out_snake(snake,board_map,posi_of_fruit); //La posi du fruit est inutile à enlever
                 }
-                else{
+                else{ //Sinon, on génère de manière aléatoire --> de bonnes chances que le fruit ne soit pas sur le snake.
                     posi_of_fruit=posi_fruit(coordhaut,coordbas);
-                    while(fruit_on_snake(snake,posi_of_fruit)){
+                    while(fruit_on_snake(snake,posi_of_fruit)){ //On génère tant qu'il est sur le snake.
                         posi_of_fruit=posi_fruit(coordhaut,coordbas);
                     }
                 }
                 
             }
-            snake_growth(snake,ancient_queue); //Agit par effet de bord aussi
+            snake_growth(snake,ancient_queue); //Agit par effet de bord aussi, on fait grandir le snake.
 
 
         }
-        if (snake_eat_himself(snake)){
+        if (snake_eat_himself(snake)){ //S'il se mange soit même
             screen_clear();
             std::cout <<"Game over" <<std::endl;
             bool_for_while=false;
             //On pourra demander plus tard si l'on veut rejouer A FAIRE
         }
-        if (snake_touch_borders(snake,borders_map)){
+        if (snake_touch_borders(snake,borders_map)){ //S'il touche la bordure
             screen_clear();
             std::cout<< "Game Over" <<std::endl;
             bool_for_while=false;
             
         }
-        key_scan=0;
+        key_scan=0; //Pas forcément utile.
+
         //std::this_thread::sleep_for (ms(1000));
-
-
-        
-        
 
         // Exemple d'attente si besoin était (attention, suspend entièrement l'application)
         //std::this_thread::sleep_for (std::chrono::milliseconds(100));
